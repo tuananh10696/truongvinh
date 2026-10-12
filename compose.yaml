@@ -1,0 +1,41 @@
+# Môi trường dev: PostgreSQL + ONLYOFFICE Docs chạy trong Docker,
+# Laravel chạy trên máy (php artisan dev) để sửa code nhanh.
+services:
+    pgsql:
+        image: postgres:17-alpine
+        restart: unless-stopped
+        ports:
+            - '${FORWARD_DB_PORT:-5434}:5432'
+        environment:
+            POSTGRES_DB: '${DB_DATABASE:-truongvinh}'
+            POSTGRES_USER: '${DB_USERNAME:-truongvinh}'
+            POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
+        volumes:
+            - pgsql-data:/var/lib/postgresql/data
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U ${DB_USERNAME:-truongvinh}']
+            interval: 5s
+            retries: 10
+
+    onlyoffice:
+        image: onlyoffice/documentserver:9.4.0.1
+        restart: unless-stopped
+        ports:
+            - '${FORWARD_ONLYOFFICE_PORT:-8080}:80'
+        environment:
+            JWT_ENABLED: 'true'
+            JWT_SECRET: '${ONLYOFFICE_JWT_SECRET}'
+            JWT_HEADER: Authorization
+            # Cho phép Document Server gọi về Laravel chạy trên máy host (IP nội bộ).
+            ALLOW_PRIVATE_IP_ADDRESS: 'true'
+            ALLOW_META_IP_ADDRESS: 'true'
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        volumes:
+            - onlyoffice-data:/var/www/onlyoffice/Data
+            - onlyoffice-logs:/var/log/onlyoffice
+
+volumes:
+    pgsql-data:
+    onlyoffice-data:
+    onlyoffice-logs:
