@@ -8,7 +8,7 @@ Tài liệu phân tích và kế hoạch: `../quan-ly-giay-to-so-do.md`, `../ke-
 
 | Thành phần    | Phiên bản                                                |
 | ------------- | -------------------------------------------------------- |
-| PHP / Laravel | 8.3+ / 13 (Fortify, Wayfinder)                           |
+| PHP / Laravel | 8.4+ / 13 (Fortify, Wayfinder)                           |
 | Frontend      | Vue 3 + Inertia 3 + TypeScript + Tailwind 4 + shadcn-vue |
 | Database      | PostgreSQL 17 (Docker)                                   |
 | Editor        | ONLYOFFICE Docs Community 9.4.0.1 (Docker)               |
